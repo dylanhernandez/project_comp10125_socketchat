@@ -1,0 +1,445 @@
+<!doctype html>
+<!--
+| Statement of Authorship:
+| StAuth10065: I Dylan Hernandez, 000307857 certify that this material is my original work.
+| No other person's work has been used without due acknowledgement.
+| I have not made my work available to anyone else.
+-->
+<html>
+    <head>
+        <title>Lab 6 [TEACHER]</title>
+        <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/sandstone/bootstrap.min.css" rel="stylesheet" integrity="sha384-G3G7OsJCbOk1USkOY4RfeX1z27YaWrZ1YuaQ5tbuawed9IoreRDpWpTkZLXQfPm3" crossorigin="anonymous">
+        <style>*,html {  -webkit-border-radius: 0 !important;  -moz-border-radius: 0 !important;  border-radius: 0 !important;  }</style>
+    </head>
+    <body>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <p class="navbar-text">LAB 6 - SOCKET.IO CHAT</p>
+                <p class="navbar-text">Classroom Collaboration [TEACHER]</p>
+            </div>
+        </nav>
+        <div class="container" style="margin-top:100px">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div id="timerPanel" class="panel panel-default" style="display: none;">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h3>
+                                        Time Remaining:
+                                        <strong><span id="timerHolder"></span></strong>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="questionPanel" class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <ul class="nav nav-pills">
+                                        <li role="presentation" class="active"><a data-toggle="tab" href="#questionTypeSA">Short Answer</a></li>
+                                        <li role="presentation"><a data-toggle="tab" href="#questionTypeMC">Multiple Choice</a></li>
+                                        <li role="presentation"><a data-toggle="tab" href="#questionTypeTF">True False</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="tab-content">
+                                        <div id="questionTypeSA" class="tab-pane fade in active">
+                                            <h3>Short Answer</h3>
+                                            <form id="questionsSA" action="">
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <div class="form-group">
+                                                            <label for="questionSA">Question:</label>
+                                                            <input type="text" id="questionSA" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12">
+                                                        <div class="form-group">
+                                                            <label for="answerSA">Answer:</label>
+                                                            <input type="answer" id="answerSA" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12">
+                                                        <div class="form-group">
+                                                            <label for="timerSA">Time:&nbsp;<span id="timerSADisplay">50</span></label>
+                                                            <input type="range" id="timerSA" min="10" max="90" step="5">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12 col-sm-6 col-md-4">
+                                                        <br />
+                                                        <input type="submit" class="btn btn-block btn-default">
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div id="questionTypeMC" class="tab-pane fade">
+                                            <h3>Multiple Choice</h3>
+                                            <form id="questionsMC" action="">
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <div class="form-group">
+                                                            <label for="questionMC">Question:</label>
+                                                            <input type="text" id="questionMC" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12">
+                                                        <label>Answer (blank fields will be ignored):</label>
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">
+                                                                    Option A
+                                                                </span>
+                                                                <span class="input-group-addon">
+                                                                    <input type="checkbox" id="answerCheck1MC">&nbsp;Correct
+                                                                </span>
+                                                                <input type="text" class="form-control" id="answerInput1MC">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">
+                                                                    Option B
+                                                                </span>
+                                                                <span class="input-group-addon">
+                                                                    <input type="checkbox" id="answerCheck2MC">&nbsp;Correct
+                                                                </span>
+                                                                <input type="text" class="form-control" id="answerInput2MC">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">
+                                                                    Option C
+                                                                </span>
+                                                                <span class="input-group-addon">
+                                                                    <input type="checkbox" id="answerCheck3MC">&nbsp;Correct
+                                                                </span>
+                                                                <input type="text" class="form-control" id="answerInput3MC">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">
+                                                                    Option D
+                                                                </span>
+                                                                <span class="input-group-addon">
+                                                                    <input type="checkbox" id="answerCheck4MC">&nbsp;Correct
+                                                                </span>
+                                                                <input type="text" class="form-control" id="answerInput4MC">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">
+                                                                    Option E
+                                                                </span>
+                                                                <span class="input-group-addon">
+                                                                    <input type="checkbox" id="answerCheck5MC">&nbsp;Correct
+                                                                </span>
+                                                                <input type="text" class="form-control" id="answerInput5MC">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12">
+                                                        <div class="form-group">
+                                                            <label for="timerMC">Time:&nbsp;<span id="timerMCDisplay">50</span></label>
+                                                            <input type="range" id="timerMC" min="10" max="90" step="5">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12 col-sm-6 col-md-4">
+                                                        <br />
+                                                        <input type="submit" class="btn btn-block btn-default">
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div id="questionTypeTF" class="tab-pane fade">
+                                            <h3>True or False</h3>
+                                            <form id="questionsTF" action="">
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <div class="form-group">
+                                                            <label for="questionTF">Question:</label>
+                                                            <input type="text" id="questionTF" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12">
+                                                        <div class="form-group">
+                                                            <div class="radio">
+                                                                <label><input type="radio" name="answerTF" id="radioTrue" value="true">True</label>
+                                                            </div>
+                                                            <div class="radio">
+                                                                <label><input type="radio" name="answerTF" id="radioFalse" value="false">False</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12">
+                                                        <div class="form-group">
+                                                            <label for="timerTF">Time:&nbsp;<span id="timerTFDisplay">50</span></label>
+                                                            <input type="range" id="timerTF" min="10" max="90" step="5">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12 col-sm-6 col-md-4">
+                                                        <br />
+                                                        <input type="submit" class="btn btn-block btn-default">
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h3>Question/Answer Results</h3>
+                                </div>
+                                <div class="col-xs-12">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <th>Information</th>
+                                            <th>Result</th>
+                                        </tr>
+                                        <tr>
+                                            <td>Total Answers Received</td>
+                                            <td><span id="resultTotalReceived">No Result</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total Correct Answers</td>
+                                            <td><span id="resultTotalCorrect">No Result</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Percentage Correct Answers</td>
+                                            <td><span id="resultPercentageCorrect">No Result</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Correct Students</td>
+                                            <td><span id="resultCorrectStudents">No Result</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Incorrect Students</td>
+                                            <td><span id="resultIncorrectStudents">No Result</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Incorrect Answers [Short Answer]</td>
+                                            <td><span id="resultIncorrectSA">No Result</span></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+        <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script>
+            //Define socket
+            var SOCKET = io();
+
+            //Define panels for teacher interface and time holder
+            var QUESTION_PANEL = $("#questionPanel");
+            var TIMER_PANEL = $("#timerPanel");
+            var TIMER_HOLDER = $("#timerHolder");
+
+            //Define selectors for short answer questions
+            var SHORT_ANSWER_FORM = $("#questionsSA");
+            var SHORT_ANSWER_QUESTION = $("#questionSA");
+            var SHORT_ANSWER_ANSWER = $("#answerSA");
+            var SHORT_ANSWER_TIMER = $("#timerSA");
+            var SHORT_ANSWER_TIMER_DISPLAY = $("#timerSADisplay");
+
+            //Define selectors for multiple choice questions
+            var MULTIPLE_CHOICE_FORM = $("#questionsMC");
+            var MULTIPLE_CHOICE_QUESTION = $("#questionMC");
+            var MULTIPLE_CHOICE_ANSWER_CHECK_A = $("#answerCheck1MC");
+            var MULTIPLE_CHOICE_ANSWER_CHECK_B = $("#answerCheck2MC");
+            var MULTIPLE_CHOICE_ANSWER_CHECK_C = $("#answerCheck3MC");
+            var MULTIPLE_CHOICE_ANSWER_CHECK_D = $("#answerCheck4MC");
+            var MULTIPLE_CHOICE_ANSWER_CHECK_E = $("#answerCheck5MC");
+            var MULTIPLE_CHOICE_ANSWER_TEXT_A = $("#answerInput1MC");
+            var MULTIPLE_CHOICE_ANSWER_TEXT_B = $("#answerInput2MC");
+            var MULTIPLE_CHOICE_ANSWER_TEXT_C = $("#answerInput3MC");
+            var MULTIPLE_CHOICE_ANSWER_TEXT_D = $("#answerInput4MC");
+            var MULTIPLE_CHOICE_ANSWER_TEXT_E = $("#answerInput5MC");
+            var MULTIPLE_CHOICE_TIMER = $("#timerMC");
+            var MULTIPLE_CHOICE_TIMER_DISPLAY = $("#timerMCDisplay");
+
+            //Define selectors for true false answer questions
+            var TRUE_FALSE_FORM = $("#questionsTF");
+            var TRUE_FALSE_QUESTION = $("#questionTF");
+            var TRUE_FALSE_RADIO_TRUE = $("#radioTrue");
+            var TRUE_FALSE_RADIO_FALSE = $("#radioFalse");
+            var TRUE_FALSE_TIMER = $("#timerTF");
+            var TRUE_FALSE_TIMER_DISPLAY = $("#timerTFDisplay");
+
+            //Define selectors for result displays
+            var RESULT_TOTAL_RECEIVED = $("#resultTotalReceived");
+            var RESULT_TOTAL_CORRECT = $("#resultTotalCorrect");
+            var RESULT_PERCENTAGE_CORRECT = $("#resultPercentageCorrect");
+            var RESULT_CORRECT_STUDENTS = $("#resultCorrectStudents");
+            var RESULT_INCORRECT_STUDENTS = $("#resultIncorrectStudents");
+            var RESULT_INCORRECT_SHORT_ANSWER = $("#resultIncorrectSA");
+
+            //This will handle the table values for incoming answers
+            var RESULT_MANAGER = {
+                totalAnswers: 0,
+                totalCorrect : 0,
+                percentageCorrect: function() {
+                    return (this.totalCorrect / this.totalAnswers) * 100;
+                },
+                clearStats: function() {
+                    this.totalAnswers = 0;
+                    this.totalCorrect = 0;
+                }
+            };
+
+            SOCKET.on('result_question_teacher', function(data) {
+                RESULT_MANAGER.totalAnswers++;
+                RESULT_MANAGER.totalCorrect += (data.correct) ? 1 : 0;
+                RESULT_TOTAL_RECEIVED.html(RESULT_MANAGER.totalAnswers);
+                RESULT_TOTAL_CORRECT.html(RESULT_MANAGER.totalCorrect);
+                RESULT_PERCENTAGE_CORRECT.html(RESULT_MANAGER.percentageCorrect());
+                if(data.correct) {
+                    RESULT_CORRECT_STUDENTS.append(data.studentName + "<br />");
+                }
+                else {
+                    RESULT_INCORRECT_STUDENTS.append(data.studentName + "<br />");
+                    if(data.type === "SA") {
+                        RESULT_INCORRECT_SHORT_ANSWER.append(data.givenAnswer + "<br />");
+                    }
+                    else {
+                        RESULT_INCORRECT_SHORT_ANSWER.html("N/A");
+                    }
+                }
+            });
+
+            //Show the time on the short answer form that will be counted
+            SHORT_ANSWER_TIMER.on('change', function() {
+                SHORT_ANSWER_TIMER_DISPLAY.html(SHORT_ANSWER_TIMER.val());
+            });
+
+            //Handles submission for the short answer form
+            SHORT_ANSWER_FORM.submit(function() {
+                RESULT_MANAGER.clearStats();
+                SOCKET.emit('submit_question', {
+                    question: SHORT_ANSWER_QUESTION.val(),
+                    answer: SHORT_ANSWER_ANSWER.val(),
+                    timer: SHORT_ANSWER_TIMER.val(),
+                    type: "SA"
+                });
+                activateTimer(SHORT_ANSWER_TIMER.val(), function() {
+                    SHORT_ANSWER_FORM.trigger("reset");
+                    SHORT_ANSWER_TIMER.trigger("change");
+                });
+                pendingResults("");
+                return false;
+            });
+
+            //Show the time on the multiple choice form that will be counted
+            MULTIPLE_CHOICE_TIMER.on('change', function() {
+                MULTIPLE_CHOICE_TIMER_DISPLAY.html(MULTIPLE_CHOICE_TIMER.val());
+            });
+
+            MULTIPLE_CHOICE_FORM.submit(function() {
+                RESULT_MANAGER.clearStats();
+                var answerCollection = {
+                    optionA: {
+                        checked: MULTIPLE_CHOICE_ANSWER_CHECK_A.is(':checked'),
+                        value: MULTIPLE_CHOICE_ANSWER_TEXT_A.val()
+                    },
+                    optionB: {
+                        checked: MULTIPLE_CHOICE_ANSWER_CHECK_B.is(':checked'),
+                        value: MULTIPLE_CHOICE_ANSWER_TEXT_B.val()
+                    },
+                    optionC: {
+                        checked: MULTIPLE_CHOICE_ANSWER_CHECK_C.is(':checked'),
+                        value: MULTIPLE_CHOICE_ANSWER_TEXT_C.val()
+                    },
+                    optionD: {
+                        checked: MULTIPLE_CHOICE_ANSWER_CHECK_D.is(':checked'),
+                        value: MULTIPLE_CHOICE_ANSWER_TEXT_D.val()
+                    },
+                    optionE: {
+                        checked: MULTIPLE_CHOICE_ANSWER_CHECK_E.is(':checked'),
+                        value: MULTIPLE_CHOICE_ANSWER_TEXT_E.val()
+                    }
+                };
+                SOCKET.emit('submit_question', {
+                    question: MULTIPLE_CHOICE_QUESTION.val(),
+                    answer: answerCollection,
+                    timer: MULTIPLE_CHOICE_TIMER.val(),
+                    type: "MC"
+                });
+                activateTimer(MULTIPLE_CHOICE_TIMER.val(), function() {
+                    MULTIPLE_CHOICE_FORM.trigger("reset");
+                    MULTIPLE_CHOICE_TIMER.trigger("change");
+                });
+                pendingResults("");
+                return false;
+            });
+
+            //Show the time on the true false form that will be counted
+            TRUE_FALSE_TIMER.on('change', function() {
+                TRUE_FALSE_TIMER_DISPLAY.html(TRUE_FALSE_TIMER.val());
+            });
+
+            //Handles the submission for the short answer form
+            TRUE_FALSE_FORM.submit(function() {
+                RESULT_MANAGER.clearStats();
+                SOCKET.emit('submit_question', {
+                    question: TRUE_FALSE_QUESTION.val(),
+                    answer: TRUE_FALSE_RADIO_TRUE.is(':checked'),
+                    timer: TRUE_FALSE_TIMER.val(),
+                    type: "TF"
+                });
+                activateTimer(TRUE_FALSE_TIMER.val(), function() {
+                    TRUE_FALSE_FORM.trigger("reset");
+                    TRUE_FALSE_TIMER.trigger("change");
+                });
+                pendingResults("");
+                return false;
+            });
+
+            //This function will start a timer based on the provided time
+            //Question panel will remain hidden until the timer is complete
+            //Callback function allows for form data to reset after completion
+            function activateTimer(time, callback) {
+                var timeRemaining = time;
+                TIMER_PANEL.show();
+                TIMER_HOLDER.html(timeRemaining);
+                QUESTION_PANEL.hide();
+                var timeInterval = setInterval(function() {
+                    TIMER_HOLDER.html(--timeRemaining);
+                    if(timeRemaining <= 0) {
+                        TIMER_PANEL.hide();
+                        QUESTION_PANEL.show();
+                        clearInterval(timeInterval);
+                        if(callback !== undefined) {
+                            callback();
+                        }
+                    }
+                }, 1000);
+            }
+
+            //This function replaces all cells with a pending message
+            //The pending message is a placeholder until answer results come in
+            function pendingResults(message) {
+                RESULT_TOTAL_RECEIVED.html(message);
+                RESULT_TOTAL_CORRECT.html(message);
+                RESULT_PERCENTAGE_CORRECT.html(message);
+                RESULT_CORRECT_STUDENTS.html(message);
+                RESULT_INCORRECT_STUDENTS.html(message);
+                RESULT_INCORRECT_SHORT_ANSWER.html(message);
+            }
+        </script>
+    </body>
+</html>
